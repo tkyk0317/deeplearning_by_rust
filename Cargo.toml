@@ -1,0 +1,8 @@
+[package]
+name = "deeplearning_from_scratch"
+version = "0.1.0"
+authors = ["tanaka takayuki <t_tanaka@sports-f.co.jp>"]
+
+[dependencies]
+ndarray = "*"
+gnuplot = "*"
