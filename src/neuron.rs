@@ -39,4 +39,9 @@ impl<'a> Neuron<'a> {
     pub fn relu(&self) -> DMatrix<f64> {
         self.dot().map(|i| i.max(0.))
     }
+
+    // 恒等関数.
+    pub fn identify(&self) -> DMatrix<f64> {
+        self.dot()
+    }
 }
