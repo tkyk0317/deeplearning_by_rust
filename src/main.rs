@@ -2,27 +2,24 @@ extern crate gnuplot;
 extern crate ndarray;
 
 use gnuplot::{Figure, Caption, Color, AxesCommon, Fix};
-use ndarray::{Array1};
+use ndarray::{Array1, Array2};
 
 // ニューロン構造体.
-struct Neuron {
+struct Neuron<'a> {
     bias: f64,
-    data: Array1<f64>,
-    weight: Array1<f64>,
+    data: &'a Array2<f64>,
+    weight: &'a Array2<f64>,
 }
 
 // ニューロン実装.
-impl Neuron {
-    pub fn new(bias: f64, data: Array1<f64>, weight: Array1<f64>) -> Option<Neuron> {
-        if data.len() != weight.len() {
-            return None;
-        }
-        return Some(Neuron { bias: bias, data: data, weight: weight });
+impl<'a> Neuron<'a> {
+    pub fn new(bias: f64, data: &'a Array2<f64>, weight: &'a Array2<f64>) -> Self {
+        Neuron { bias: bias, data: data, weight: weight }
     }
 
     // 内積.
-    fn dot(&self) -> f64 {
-        self.data.dot(&self.weight) + self.bias
+    fn dot(&self) -> Array2<f64> {
+        self.data.dot(self.weight) + self.bias
     }
 }
 
@@ -44,17 +41,8 @@ fn relu(x: f64) -> f64 {
     x.max(0.)
 }
 
-// main関数.
-fn main() {
-    let mut n = Array1::<f64>::zeros(4);
-    let mut w = Array1::<f64>::zeros(4);
-    n[0] = 10.;
-    w[0] = 2.;
-    let _n = Neuron::new(10., n, w).unwrap();
-
-    println!("{:?}", _n.dot());
-    println!("{}", sigmoid(_n.dot()));
-
+// 活性化関数描画.
+fn draw_active_function() {
     // 活性化関数適用.
     let mut x: Vec<f64> = std::vec::Vec::new();
     for i in -100..100 { x.push((i as f64) / 10.); }
@@ -65,9 +53,22 @@ fn main() {
     // グラフ描画.
     let mut fg = Figure::new();
     fg.axes2d()
-      .lines(&x, &sig,  &[Caption("Sigmoid"), Color("red")])
-      .lines(&x, &step, &[Caption("Step"), Color("blue")])
-      .lines(&x, &relu, &[Caption("ReLU"), Color("green")])
+      .lines(&x, &sig,  &[Caption("sigmoid"), Color("red")])
+      .lines(&x, &step, &[Caption("step"), Color("blue")])
+      .lines(&x, &relu, &[Caption("relu"), Color("green")])
       .set_y_range(Fix(-0.5), Fix(2.0));
     fg.show();
+}
+
+// main関数.
+fn main() {
+    // 第一層入力データ.
+    let x1 = Array2::<f64>::from(vec![[1., 2.]]);
+    let w1 = Array2::<f64>::from(vec![[1. ,3., 5.], [2., 4., 6.]]);
+    let n1 = Neuron::new(0., &x1, &w1);
+    // 出力層.
+    println!("dot: {}", n1.dot());
+
+    // グラフ描画.
+    //draw_active_function();
 }
