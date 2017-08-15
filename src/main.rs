@@ -70,7 +70,7 @@ fn multi_neural_nw() {
     let x3 = n2.sigmoid();
     let n3 = neuron::Neuron::new(&b3, &x3, &w3);
 
-    println!("identify: {}", n3.identify());
+    println!("softmax: {}", n3.softmax());
 }
 
 // main関数.
