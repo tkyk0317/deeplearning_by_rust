@@ -1,25 +1,25 @@
 extern crate gnuplot;
-extern crate ndarray;
+extern crate nalgebra;
 
 use gnuplot::{Figure, Caption, Color, AxesCommon, Fix};
-use ndarray::{Array1, Array2};
+use nalgebra::core::{DMatrix};
 
 // ニューロン構造体.
 struct Neuron<'a> {
-    bias: f64,
-    data: &'a Array2<f64>,
-    weight: &'a Array2<f64>,
+    bias: &'a DMatrix<f64>,
+    data: &'a DMatrix<f64>,
+    weight: &'a DMatrix<f64>,
 }
 
 // ニューロン実装.
 impl<'a> Neuron<'a> {
-    pub fn new(bias: f64, data: &'a Array2<f64>, weight: &'a Array2<f64>) -> Self {
+    pub fn new(bias: &'a DMatrix<f64>, data: &'a DMatrix<f64>, weight: &'a DMatrix<f64>) -> Self {
         Neuron { bias: bias, data: data, weight: weight }
     }
 
     // 内積.
-    fn dot(&self) -> Array2<f64> {
-        self.data.dot(self.weight) + self.bias
+    fn dot(&self) -> DMatrix<f64> {
+        self.data * self.weight + self.bias
     }
 }
 
@@ -63,11 +63,19 @@ fn draw_active_function() {
 // main関数.
 fn main() {
     // 第一層入力データ.
-    let x1 = Array2::<f64>::from(vec![[1., 2.]]);
-    let w1 = Array2::<f64>::from(vec![[1. ,3., 5.], [2., 4., 6.]]);
-    let n1 = Neuron::new(0., &x1, &w1);
+    let b1 = DMatrix::<f64>::from_iterator(1, 3, [0., 0., 0.].iter().cloned());
+    let x1 = DMatrix::<f64>::from_iterator(1, 2, [1., 2.].iter().cloned());
+    let w1 = DMatrix::<f64>::from_iterator(2, 3, [1., 2., 3., 4., 5., 6.].iter().cloned());
+    let n1 = Neuron::new(&b1, &x1, &w1);
+
     // 出力層.
     println!("dot: {}", n1.dot());
+
+    let b2 = DMatrix::<f64>::from_iterator(2, 3, [0., 0., 0., 0., 0., 0.].iter().cloned());
+    let x2 = DMatrix::<f64>::from_iterator(2, 6, [1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.].iter().cloned());
+    let w2 = DMatrix::<f64>::from_iterator(6, 3, [1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16., 17., 18.].iter().cloned());
+    let n2 = Neuron::new(&b2, &x2, &w2);
+    println!("dot: {}", n2.dot());
 
     // グラフ描画.
     //draw_active_function();
