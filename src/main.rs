@@ -41,12 +41,10 @@ fn sigmoid(x: f64) -> f64 {
 
 // relu関数.
 fn relu(x: f64) -> f64 {
-    match x > 0. {
-        true  => x,
-        false => 0.
-    }
+    x.max(0.)
 }
 
+// main関数.
 fn main() {
     let mut n = Array1::<f64>::zeros(4);
     let mut w = Array1::<f64>::zeros(4);
@@ -67,9 +65,9 @@ fn main() {
     // グラフ描画.
     let mut fg = Figure::new();
     fg.axes2d()
-        .lines(&x, &sig,  &[Caption("Sigmoid"), Color("red")])
-        .lines(&x, &step, &[Caption("Step"), Color("blue")])
-        .lines(&x, &relu, &[Caption("ReLU"), Color("green")])
-        .set_y_range(Fix(-0.5), Fix(2.0));
+      .lines(&x, &sig,  &[Caption("Sigmoid"), Color("red")])
+      .lines(&x, &step, &[Caption("Step"), Color("blue")])
+      .lines(&x, &relu, &[Caption("ReLU"), Color("green")])
+      .set_y_range(Fix(-0.5), Fix(2.0));
     fg.show();
 }
