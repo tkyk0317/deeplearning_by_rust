@@ -21,28 +21,48 @@ impl<'a> Neuron<'a> {
     fn dot(&self) -> DMatrix<f64> {
         self.data * self.weight + self.bias
     }
-}
 
-// ステップ関数.
-fn step(x: f64) -> u64 {
-    match x > 0. {
-        true  => 1,
-        false => 0,
+    // ステップ関数.
+    fn step(&self) -> DMatrix<f64> {
+        self.dot().map(|i| {
+            match i > 0. {
+                true => 1.,
+                false => 0.
+            }
+        })
     }
-}
 
-// シグモイド関数.
-fn sigmoid(x: f64) -> f64 {
-    1. / (1. + (-x).exp())
-}
+    // シグモイド関数.
+    fn sigmoid(&self) -> DMatrix<f64> {
+        self.dot().map(|i| {
+            1. / (1. + (-i).exp())
+        })
+    }
 
-// relu関数.
-fn relu(x: f64) -> f64 {
-    x.max(0.)
+    // ReLU関数.
+    fn relu(&self) -> DMatrix<f64> {
+        self.dot().map(|i| i.max(0.))
+    }
 }
 
 // 活性化関数描画.
 fn draw_active_function() {
+    // ステップ関数.
+    fn step(x: f64) -> u64 {
+        match x > 0. {
+            true  => 1,
+            false => 0,
+        }
+    }
+    // シグモイド関数.
+    fn sigmoid(x: f64) -> f64 {
+        1. / (1. + (-x).exp())
+    }
+    // relu関数.
+    fn relu(x: f64) -> f64 {
+        x.max(0.)
+    }
+
     // 活性化関数適用.
     let mut x: Vec<f64> = std::vec::Vec::new();
     for i in -100..100 { x.push((i as f64) / 10.); }
@@ -70,13 +90,19 @@ fn main() {
 
     // 出力層.
     println!("dot: {}", n1.dot());
+    println!("step: {}", n1.step());
+    println!("sigmoid: {}", n1.sigmoid());
+    println!("relu: {}", n1.relu());
 
     let b2 = DMatrix::<f64>::from_iterator(2, 3, [0., 0., 0., 0., 0., 0.].iter().cloned());
     let x2 = DMatrix::<f64>::from_iterator(2, 6, [1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.].iter().cloned());
     let w2 = DMatrix::<f64>::from_iterator(6, 3, [1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16., 17., 18.].iter().cloned());
     let n2 = Neuron::new(&b2, &x2, &w2);
     println!("dot: {}", n2.dot());
+    println!("step: {}", n2.step());
+    println!("sigmoid: {}", n2.sigmoid());
+    println!("relu: {}", n2.relu());
 
     // グラフ描画.
-    //draw_active_function();
+    draw_active_function();
 }
