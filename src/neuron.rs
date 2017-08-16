@@ -48,7 +48,8 @@ impl<'a> Neuron<'a> {
     // ソフトマックス関数.
     pub fn softmax(&self) -> DMatrix<f64> {
         let _dot = self.dot();
-        let sum_exp = _dot.iter().fold(0., |acc, i| i.exp() + acc);
-        _dot.map(|i| { i.exp() / sum_exp })
+        let _max = _dot.iter().fold(0.0 / 0.0, |acc, i| i.max(acc) );
+        let _sum = _dot.iter().fold(0., |acc, i| (i - _max).exp() + acc);
+        _dot.map(|i| { (i - _max).exp() / _sum })
     }
 }
