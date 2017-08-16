@@ -3,6 +3,7 @@ name = "deeplearning_from_scratch"
 version = "0.1.0"
 dependencies = [
  "gnuplot 0.0.22 (registry+https://github.com/rust-lang/crates.io-index)",
+ "mnist 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "nalgebra 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -24,6 +25,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "bitflags"
 version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "byteorder"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -72,6 +78,14 @@ version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitflags 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "mnist"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "byteorder 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -125,6 +139,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum alga 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)" = "9a9749cf5cfdca30ac35de67358fb24e2d26a88e2819ee83efb794a09f0b421b"
 "checksum approx 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "08abcc3b4e9339e33a3d0a5ed15d84a687350c05689d825e0f6655eef9e76a94"
 "checksum bitflags 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)" = "aad18937a628ec6abcd26d1489012cc0e18c21798210f491af69ded9b881106d"
+"checksum byteorder 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "ff81738b726f5d099632ceaffe7fb65b90212e8dce59d518729e7e8634032d3d"
 "checksum conv 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)" = "78ff10625fd0ac447827aa30ea8b861fead473bb60aeb73af6c1c58caf0d1299"
 "checksum custom_derive 0.1.7 (registry+https://github.com/rust-lang/crates.io-index)" = "ef8ae57c4978a2acd8b869ce6b9ca1dfe817bff704c220209fdef2c0b75a01b9"
 "checksum generic-array 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "3406a3975bc944fdd85b7964d53296a0ff11f4b6c4704fa4972c9a7c8ba27367"
@@ -132,6 +147,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum libc 0.2.29 (registry+https://github.com/rust-lang/crates.io-index)" = "8a014d9226c2cc402676fbe9ea2e15dd5222cd1dd57f576b5b283178c944a264"
 "checksum magenta 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "4bf0336886480e671965f794bc9b6fce88503563013d1bfb7a502c81fe3ac527"
 "checksum magenta-sys 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "40d014c7011ac470ae28e2f76a02bfea4a8480f73e701353b49ad7a8d75f4699"
+"checksum mnist 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "25f19bfda80095b4294000bbb50506f028149ed0ddb7fabf46ebb673b91626bc"
 "checksum nalgebra 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)" = "c03e373ef04941f13088ef9814b90754e0d370a9b8cc9ce31d159f580e32b1a9"
 "checksum num-complex 0.1.40 (registry+https://github.com/rust-lang/crates.io-index)" = "503e668405c5492d67cf662a81e05be40efe2e6bcf10f7794a07bd9865e704e6"
 "checksum num-traits 0.1.40 (registry+https://github.com/rust-lang/crates.io-index)" = "99843c856d68d8b4313b03a17e33c4bb42ae8f6610ea81b28abe076ac721b9b0"

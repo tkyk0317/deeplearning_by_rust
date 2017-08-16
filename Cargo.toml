@@ -6,3 +6,4 @@ authors = ["tanaka takayuki <t_tanaka@sports-f.co.jp>"]
 [dependencies]
 gnuplot = "*"
 nalgebra = "*"
+mnist = "*"
