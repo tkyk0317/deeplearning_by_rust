@@ -80,7 +80,4 @@ fn main() {
 
     // 多層ニューラルネットワーク.
     multi_neural_nw();
-
-    // グラフ描画.
-    draw_active_function();
 }
