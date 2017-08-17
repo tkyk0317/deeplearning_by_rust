@@ -52,7 +52,7 @@ fn single_neural_nw() {
     let n1 = neuron::Neuron::new(&b1, &x1, &w1);
 
     // 出力層.
-    println!("identify: {}", n1.identify());
+    println!("identify:\n{}", n1.identify());
 }
 
 // 多層ニューラルネットワーク.
@@ -72,22 +72,19 @@ fn multi_neural_nw() {
     let x3 = n2.sigmoid();
     let n3 = neuron::Neuron::new(&b3, &x3, &w3);
 
-    println!("softmax: {}", n3.softmax());
+    println!("softmax:\n{}", n3.softmax());
 }
 
 // mnistニューラルネットワーク.
 fn mnist_neural_nw() {
     let (size, rows, cols) = (50_000, 28, 28);
-    let Mnist {
-        trn_img, trn_lbl,
-        val_img, val_lbl,
-        tst_img, tst_lbl } = MnistBuilder::new()
-                                            .label_format_digit()
-                                            .training_set_length(size)
-                                            .validation_set_length(size)
-                                            .test_set_length(size)
-                                            .finalize();
-    let x1 = DMatrix::<f64>::from_iterator(1, rows * cols, trn_img.iter().map(|i| *i as f64));
+    let Mnist { trn_img, trn_lbl, .. } = MnistBuilder::new().label_format_digit()
+                                                            .training_set_length(size)
+                                                            //.validation_set_length(size)
+                                                            //.test_set_length(size)
+                                                            .finalize();
+    let x1 = DMatrix::<f64>::from_iterator(1, trn_img.len(),
+                                           trn_img.iter().map(|i| *i as f64));
 }
 
 // main関数.
