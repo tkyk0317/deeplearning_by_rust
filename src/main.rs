@@ -2,13 +2,17 @@ extern crate gnuplot;
 extern crate nalgebra;
 extern crate mnist;
 
-use gnuplot::{Figure, Caption, Color, AxesCommon, Fix};
 use nalgebra::core::{DMatrix};
 use mnist::{Mnist, MnistBuilder};
+use gnuplot::{Figure, Caption, Color, AxesCommon, Fix};
 
 mod neuron;
+mod neural;
+mod gradient;
+mod loss_func;
 
 // 活性化関数描画.
+#[test]
 fn draw_active_function() {
     // ステップ関数.
     fn step(x: f64) -> u64 {
@@ -85,6 +89,9 @@ fn mnist_neural_nw() {
                                                             .finalize();
     let x1 = DMatrix::<f64>::from_iterator(1, trn_img.len(),
                                            trn_img.iter().map(|i| *i as f64));
+
+    let nw = neural::NeuralNW::new(&x1, &x1);
+    nw.trainning();
 }
 
 // main関数.
