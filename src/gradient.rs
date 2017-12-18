@@ -6,6 +6,9 @@ use std::cell::RefCell;
 use nalgebra::core::{DMatrix};
 use neural;
 
+// エイリアス.
+type GradientData = Rc<RefCell<DMatrix<f64>>>;
+
 // 勾配法.
 pub struct GradientDescent {}
 
@@ -18,11 +21,8 @@ impl GradientDescent {
     /// y: 出力結果.
     /// func: 勾配法を適用する損失関数.
     ///
-    /// ## 戻り値
-    //pub fn gradient<F: ::std::ops::Fn(&DMatrix<f64>, &DMatrix<f64>) -> f64>
-    //               (d: &DMatrix<f64>, x: &mut DMatrix<f64>, f: F) -> Box<DMatrix<f64>> {
     pub fn gradient<F: ::std::ops::Fn(&neural::NeuralNW, &DMatrix<f64>) -> f64>
-        (obj: &neural::NeuralNW, d: &Rc<RefCell<DMatrix<f64>>>, func: F) -> Box<DMatrix<f64>> {
+        (obj: &neural::NeuralNW, d: &GradientData, func: F) -> Box<DMatrix<f64>> {
         let mut result = DMatrix::<f64>::from_element(d.borrow().nrows(), d.borrow().ncols(), 0.);
         let _h = 1.0e-4;
         let len = d.borrow().len();
