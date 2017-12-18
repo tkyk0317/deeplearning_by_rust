@@ -21,7 +21,8 @@ impl GradientDescent {
     /// ## 戻り値
     //pub fn gradient<F: ::std::ops::Fn(&DMatrix<f64>, &DMatrix<f64>) -> f64>
     //               (d: &DMatrix<f64>, x: &mut DMatrix<f64>, f: F) -> Box<DMatrix<f64>> {
-    pub fn gradient(obj: &neural::NeuralNW, d: &Rc<RefCell<DMatrix<f64>>>) -> Box<DMatrix<f64>> {
+    pub fn gradient<F: ::std::ops::Fn(&neural::NeuralNW, &DMatrix<f64>) -> f64>
+        (obj: &neural::NeuralNW, d: &Rc<RefCell<DMatrix<f64>>>, func: F) -> Box<DMatrix<f64>> {
         let mut result = DMatrix::<f64>::from_element(d.borrow().nrows(), d.borrow().ncols(), 0.);
         let _h = 1.0e-4;
         let len = d.borrow().len();
@@ -31,9 +32,10 @@ impl GradientDescent {
 
             // 1変数を変化させた場合の変化量を求める.
             data[i] = org + _h;
-            let _d1 = obj.callback(&data);
+            //let _d1 = obj.callback(&data);
+            let _d1 = func(obj, &data);
             data[i] = org - _h;
-            let _d2 = obj.callback(&data);
+            let _d2 = func(obj, &data);
 
             // 変化量を保存.
             result[i] = (_d1 - _d2) / (2. * _h);

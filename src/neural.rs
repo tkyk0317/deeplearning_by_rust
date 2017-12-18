@@ -8,12 +8,32 @@ use std::rc::Rc;
 use std::cell::RefCell;
 use std::vec::Vec;
 
+/// 勾配法コールバック関数.
+/// この関数で、ニューラルネットワークを実施する.
+///
+/// ## 引数.
+/// &DMatrix<f64> 勾配法により変化させるパラメータ.
+//fn callback(d: &DMatrix<f64>, x: &DMatrix<f64>) -> f64 {
+fn callback_bias(obj :&NeuralNW, d: &DMatrix<f64>) -> f64 {
+    let weight = &*obj.input_weight[0].borrow();
+    let data = &*obj.input_data.borrow();
+    let n1 = neuron::Neuron::new(d, data, weight);
+    let x2 = n1.sigmoid();
+    return loss_func::cross_entropy(&x2, &*obj.reference.borrow());
+}
+fn callback_weight(obj :&NeuralNW, d: &DMatrix<f64>) -> f64 {
+    let bias = &*obj.input_bias[0].borrow();
+    let data = &*obj.input_data.borrow();
+    let n1 = neuron::Neuron::new(bias, data, d);
+    let x2 = n1.sigmoid();
+    return loss_func::cross_entropy(&x2, &*obj.reference.borrow());
+}
 // ニューラルネットワーク.
 pub struct NeuralNW {
-    input_data: Rc<RefCell<DMatrix<f64>>>,        // 入力データ.
-    input_bias: Vec<Rc<RefCell<DMatrix<f64>>>>,   // バイアス入力データ.
-    input_weight: Vec<Rc<RefCell<DMatrix<f64>>>>, // 重み入力データ.
-    reference: Rc<RefCell<DMatrix<f64>>>,         // リファレンス.
+    pub input_data: Rc<RefCell<DMatrix<f64>>>,        // 入力データ.
+    pub input_bias: Vec<Rc<RefCell<DMatrix<f64>>>>,   // バイアス入力データ.
+    pub input_weight: Vec<Rc<RefCell<DMatrix<f64>>>>, // 重み入力データ.
+    pub reference: Rc<RefCell<DMatrix<f64>>>,         // リファレンス.
 }
 
 impl NeuralNW {
@@ -28,23 +48,7 @@ impl NeuralNW {
     /// トレーニング.
     /// 重み、バイアスを変化させながら、LossFuncを実行.
     pub fn trainning(&self) {
-        for bias in &self.input_bias {
-            let _bias = gradient::GradientDescent::gradient(self, bias);
-        }
-    }
-
-    /// 勾配法コールバック関数.
-    /// この関数で、ニューラルネットワークを実施する.
-    ///
-    /// ## 引数.
-    /// &DMatrix<f64> 勾配法により変化させるパラメータ.
-    //fn callback(d: &DMatrix<f64>, x: &DMatrix<f64>) -> f64 {
-    pub fn callback(&self, d: &DMatrix<f64>) -> f64 {
-        let weight = &*self.input_weight[0].borrow();
-        let data = &*self.input_data.borrow();
-        let n1 = neuron::Neuron::new(d, data, weight);
-
-        let x2 = n1.sigmoid();
-        return loss_func::cross_entropy(&x2, &*self.reference.borrow());
+        let _bias = gradient::GradientDescent::gradient(self, &self.input_bias[0], callback_bias);
+        let _weight = gradient::GradientDescent::gradient(self, &self.input_weight[0], callback_weight);
     }
 }
