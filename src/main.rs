@@ -5,6 +5,9 @@ extern crate mnist;
 use nalgebra::core::{DMatrix};
 use mnist::{Mnist, MnistBuilder};
 use gnuplot::{Figure, Caption, Color, AxesCommon, Fix};
+use std::vec::Vec;
+use std::rc::Rc;
+use std::cell::RefCell;
 
 mod neuron;
 mod neural;
@@ -87,10 +90,17 @@ fn mnist_neural_nw() {
                                                             //.validation_set_length(size)
                                                             //.test_set_length(size)
                                                             .finalize();
-    let x1 = DMatrix::<f64>::from_iterator(1, trn_img.len(),
-                                           trn_img.iter().map(|i| *i as f64));
+    let _x1 = DMatrix::<f64>::from_iterator(1, 2, [1., 0.5].iter().cloned());
+    let x1 = Rc::new(RefCell::new(_x1));
+    let _r1 = DMatrix::<f64>::from_iterator(1, trn_img.len(), trn_img.iter().map(|i| *i as f64));
+    let r1 = Rc::new(RefCell::new(_r1));
+    let _b1 = DMatrix::<f64>::from_iterator(1, 3, [0.00001, 0.00002, 0.00003].iter().cloned());
+    let b1 = vec![Rc::new(RefCell::new(_b1))];
+    let _w1 = DMatrix::<f64>::from_iterator(2, 3, [0.1, 0.2, 0.3, 0.4, 0.5, 0.6].iter().cloned());
+    let w1 = vec![Rc::new(RefCell::new(_w1))];
 
-    let nw = neural::NeuralNW::new(&x1, &x1);
+    // ニューラルネットワーク実施.
+    let nw = neural::NeuralNW::new(x1, b1, w1, r1);
     nw.trainning();
 }
 

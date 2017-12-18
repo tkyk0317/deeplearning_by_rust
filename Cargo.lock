@@ -1,12 +1,3 @@
-[root]
-name = "deeplearning_from_scratch"
-version = "0.1.0"
-dependencies = [
- "gnuplot 0.0.22 (registry+https://github.com/rust-lang/crates.io-index)",
- "mnist 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "nalgebra 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
 [[package]]
 name = "alga"
 version = "0.5.2"
@@ -44,6 +35,15 @@ dependencies = [
 name = "custom_derive"
 version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "deeplearning_from_scratch"
+version = "0.1.0"
+dependencies = [
+ "gnuplot 0.0.22 (registry+https://github.com/rust-lang/crates.io-index)",
+ "mnist 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "nalgebra 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)",
+]
 
 [[package]]
 name = "generic-array"

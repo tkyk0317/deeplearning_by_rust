@@ -1,12 +1,14 @@
 extern crate nalgebra;
 
+use std::rc::Rc;
+use std::cell::RefCell;
 use nalgebra::core::{DMatrix};
 
 // ニューロン構造体.
 pub struct Neuron<'a> {
     bias: &'a DMatrix<f64>,
     data: &'a DMatrix<f64>,
-    weight: &'a DMatrix<f64>,
+    weight: &'a DMatrix<f64>
 }
 
 // ニューロン実装.
